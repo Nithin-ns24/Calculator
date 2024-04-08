@@ -39,5 +39,6 @@ jobs:
         uses: pixee/upload-tool-results-action@v1.0.1
         with:
           tool: sonar
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+
             
