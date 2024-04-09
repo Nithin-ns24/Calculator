@@ -156,22 +156,14 @@ public class CalculatorUI {
             typedValue = 0;
         });
 
-        btnBack = createButton("<-", columns[1], rows[1] + 1);
+        btnBack = createButton("<-", columns[1], rows[1]);
         btnBack.addActionListener(event -> {
-            try {
-                // Add action logic here
-            } catch (Exception e) {
-                // Handle any exceptions gracefully
-                e.printStackTrace(); // Or log the exception
-            }
-            // Potential bug: Missing semicolon at the end of the ActionListener block
-        });
             String str = inputScreen.getText();
             StringBuilder str2 = new StringBuilder();
             for (int i = 0; i < (str.length() - 1); i++) {
                 str2.append(str.charAt(i));
             }
-            if (str2.toString().equals("")) {
+            if ("".equals(str2.toString())) {
                 inputScreen.setText("0");
             } else {
                 inputScreen.setText(str2.toString());
