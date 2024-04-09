@@ -1,9 +1,7 @@
 name: SonarCloud
 on:
  workflow_dispatch:
-    inputs:
-      branch:
-        description: branch
+   
 jobs:
   build:
     name: Build and analyze
