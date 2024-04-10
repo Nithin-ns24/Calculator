@@ -1,1 +1,15 @@
+name: Check Run Completed Workflow
 
+on:
+  check_run:
+    types: [completed]
+
+jobs:
+  process_check_run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      # Add your steps here to perform actions based on the completion of the check run
