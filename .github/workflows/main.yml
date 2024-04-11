@@ -35,22 +35,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nithin-ns24-1_calculator  
-
-      - name: Create Check Run
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const github = require('@actions/github');
-            const response = await github.getOctokit(process.env.GIT_HUB_TOKEN).checks.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'SonarCloud Code Analysis',
-              head_sha: context.sha,
-              status: 'completed',
-              conclusion: 'success',
-              output: {
-                title: 'SonarCloud Analysis',
-                summary: 'Completed Successfully'
-              }
-            });
-            console.log(response);
