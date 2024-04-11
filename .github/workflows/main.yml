@@ -40,11 +40,16 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            github.actions.createCheckRun({
+            const response = await github.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               name: 'SonarCloud Code Analysis',
+              head_sha: context.sha,
               status: 'completed',
-              conclusion: 'success',  # Adjust conclusion based on analysis results (optional)
+              conclusion: 'success',
               output: {
-                'SonarCloud Analysis': 'Completed Successfully'  # Optional output details
+                title: 'SonarCloud Analysis',
+                summary: 'Completed Successfully'
               }
             });
+            console.log(response);
