@@ -37,10 +37,11 @@ jobs:
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nithin-ns24-1_calculator  
 
       - name: Create Check Run
-        uses: actions/github-script@v7
+        uses: actions/github-script@v6
         with:
           script: |
-            const response = await github.checks.create({
+            const github = require('@actions/github');
+            const response = await github.getOctokit(process.env.GIT_HUB_TOKEN).checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'SonarCloud Code Analysis',
