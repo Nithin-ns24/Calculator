@@ -47,7 +47,7 @@ jobs:
         with:
           script: |
             const github = require('@actions/github');
-            const response = await github.getOctokit(process.env.GITHUB_TOKEN).checks.create({
+            const response = await github.getOctokit(process.env.GIT_HUB_TOKEN).checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'SonarCloud Code Analysis',
