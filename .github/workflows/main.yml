@@ -1,9 +1,7 @@
 name: SonarCloud Code Analysis
 
 on:
-  pull_request:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -32,7 +30,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=nithin-ns24-1_calculator  
 
@@ -42,21 +40,12 @@ jobs:
     needs: build
     if: always()
     steps:
-      - name: Create Check Run
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const github = require('@actions/github');
-            const response = await github.getOctokit(process.env.GIT_HUB_TOKEN).checks.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'SonarCloud Code Analysis',
-              head_sha: context.sha,
-              status: 'completed',
-              conclusion: 'success',
-              output: {
-                title: 'SonarCloud Analysis',
-                summary: 'Completed Successfully'
-              }
-            });
-            console.log(response);
+      - name: Trigger Check Run Workflow
+        env:
+          GH_API_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Authorization: token $GIT_HUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/check-runs \
+            -d '{"name": "SonarCloud Code Analysis", "head_sha": "${{ github.sha }}", "status": "completed", "conclusion": "success", "output": {"title": "SonarCloud Analysis", "summary": "Completed Successfully"}}'
